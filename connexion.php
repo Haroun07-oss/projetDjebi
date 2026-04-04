@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([$email]);
     $user = $stmt->fetch();
 
-    if ($user && password_verify($mot_de_passe, $user['mot_de_passe'])) {
+    if ($user && ($mot_de_passe == $user['mot_de_passe'] || password_verify($mot_de_passe, $user['mot_de_passe']) || md5($mot_de_passe) == $user['mot_de_passe'])) {
         // Vérifier si le compte est actif
         if ($user['statut_compte'] === 'inactif') {
             $erreur = "Votre compte a été désactivé par l'administrateur.";
