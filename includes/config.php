@@ -1,4 +1,7 @@
 <?php
+// Configuration de la base de données
+define('BASE_URL', 'http://localhost/projetDjebi');
+
 $host = 'localhost';
 $dbname = 'servprestation';
 $username = 'root';
@@ -11,6 +14,5 @@ try {
     die("Erreur de connexion : " . $e->getMessage());
 }
 
-// Démarrer la session
 session_start();
 ?>
