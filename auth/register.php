@@ -20,6 +20,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if($mot_de_passe !== $confirme) {
         $erreur = "Les mots de passe ne correspondent pas.";
+    } elseif(strlen($mot_de_passe) < 4) {
+        $erreur = "Le mot de passe doit faire au moins 4 caractères.";
     } else {
         $stmt = $pdo->prepare("SELECT id_utilisateur FROM Utilisateur WHERE email = ?");
         $stmt->execute([$email]);
@@ -44,69 +46,151 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Inscription - ServiLink</title>
+    <title>Inscription - IvoireBara</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        body {
+            background: #f4f1ea;
+        }
+        .carte-inscription {
+            background: #fffef7;
+            border: 1px solid #e2dcd0;
+            border-radius: 28px;
+            padding: 2rem;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+        .input-auth {
+            background: #fefcf8;
+            border: 1px solid #e2dcd0;
+            border-radius: 14px;
+            padding: 12px 16px;
+            width: 100%;
+            transition: all 0.15s;
+        }
+        .input-auth:focus {
+            border-color: #c17b4c;
+            outline: none;
+            background: white;
+        }
+        .btn-inscription {
+            background: #c17b4c;
+            border: none;
+            border-radius: 40px;
+            padding: 12px;
+            width: 100%;
+            color: white;
+            font-weight: 500;
+            transition: all 0.15s;
+        }
+        .btn-inscription:hover {
+            background: #a05f38;
+        }
+        .lien-connexion {
+            color: #c17b4c;
+            text-decoration: none;
+        }
+        .lien-connexion:hover {
+            text-decoration: underline;
+        }
+        .alerte-succes {
+            background: #e8f0ec;
+            border-left: 3px solid #7c9c8e;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: #5c7c6e;
+            font-size: 0.85rem;
+        }
+        .alerte-erreur {
+            background: #f5e8e5;
+            border-left: 3px solid #b87a5a;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: #b87a5a;
+            font-size: 0.85rem;
+        }
+        .role-select {
+            background: #fefcf8;
+            border: 1px solid #e2dcd0;
+            border-radius: 14px;
+            padding: 12px 16px;
+            width: 100%;
+        }
+    </style>
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-header text-center">
-                    <h4><i class="fas fa-user-plus"></i> Inscription</h4>
+<div class="container py-5">
+    <div class="text-center mb-4">
+        <a href="../index.php" style="text-decoration: none;">
+            <h2 style="color: #2c2b28; font-weight: 700;">Ivoire<span style="color: #c17b4c;">Bara</span></h2>
+        </a>
+    </div>
+    
+    <div class="carte-inscription">
+        <div class="text-center mb-4">
+            <i class="fas fa-user-plus fa-2x" style="color: #c17b4c;"></i>
+            <h3 style="font-weight: 600; margin-top: 10px;">Inscription</h3>
+            <p style="color: #8b8a86; font-size: 0.85rem;">Rejoignez la communauté ! 🎉</p>
+        </div>
+        
+        <?php if($message): ?>
+            <div class="alerte-succes mb-4">
+                <i class="fas fa-check-circle me-2"></i> <?= $message ?>
+                <div class="mt-2"><a href="login.php" class="lien-connexion">Se connecter maintenant →</a></div>
+            </div>
+        <?php endif; ?>
+        
+        <?php if($erreur): ?>
+            <div class="alerte-erreur mb-4">
+                <i class="fas fa-exclamation-circle me-2"></i> <?= $erreur ?>
+            </div>
+        <?php endif; ?>
+        
+        <?php if(!$message): ?>
+        <form method="POST">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">Nom</label>
+                    <input type="text" name="nom" class="input-auth" required>
                 </div>
-                <div class="card-body">
-                    <?php if($message): ?>
-                        <div class="alert alert-success"><?= $message ?></div>
-                    <?php endif; ?>
-                    <?php if($erreur): ?>
-                        <div class="alert alert-danger"><?= $erreur ?></div>
-                    <?php endif; ?>
-                    <form method="POST">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label>Nom</label>
-                                <input type="text" name="nom" class="form-control" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label>Prénom</label>
-                                <input type="text" name="prenom" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label>Email</label>
-                            <input type="email" name="email" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label>Téléphone</label>
-                            <input type="tel" name="telephone" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label>Mot de passe</label>
-                            <input type="password" name="mot_de_passe" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label>Confirmer</label>
-                            <input type="password" name="confirme_mdp" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label>Je suis</label>
-                            <select name="role" class="form-select" required>
-                                <option value="client">Client</option>
-                                <option value="prestataire">Prestataire</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
-                    </form>
-                    <div class="text-center mt-3">
-                        Déjà un compte ? <a href="login.php">Connectez-vous</a>
-                    </div>
+                <div class="col-md-6 mb-3">
+                    <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">Prénom</label>
+                    <input type="text" name="prenom" class="input-auth" required>
                 </div>
             </div>
+            <div class="mb-3">
+                <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">Email</label>
+                <input type="email" name="email" class="input-auth" required>
+            </div>
+            <div class="mb-3">
+                <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">Téléphone</label>
+                <input type="tel" name="telephone" class="input-auth" required>
+            </div>
+            <div class="mb-3">
+                <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">Mot de passe</label>
+                <input type="password" name="mot_de_passe" class="input-auth" required>
+            </div>
+            <div class="mb-3">
+                <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">Confirmer</label>
+                <input type="password" name="confirme_mdp" class="input-auth" required>
+            </div>
+            <div class="mb-4">
+                <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">Je suis</label>
+                <select name="role" class="role-select" required>
+                    <option value="client">👤 Client - Je cherche des services</option>
+                    <option value="prestataire">🔧 Prestataire - Je propose mes services</option>
+                </select>
+            </div>
+            <button type="submit" class="btn-inscription">S'inscrire</button>
+        </form>
+        
+        <div class="text-center mt-4" style="font-size: 0.85rem; color: #8b8a86;">
+            Déjà un compte ? <a href="login.php" class="lien-connexion">Connectez-vous</a>
         </div>
+        <?php endif; ?>
     </div>
 </div>
 

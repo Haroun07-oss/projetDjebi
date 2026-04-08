@@ -21,45 +21,125 @@ $demandes = $stmt->fetchAll();
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mes demandes - ServiLink</title>
+    <title>Mes demandes - IvoireBara</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        .demande-card {
+            background: #fffef7;
+            border: 1px solid #e2dcd0;
+            border-radius: 20px;
+            padding: 1.2rem;
+            margin-bottom: 1.2rem;
+            transition: all 0.2s;
+        }
+        .demande-card:hover {
+            border-color: #c17b4c;
+        }
+        .statut-badge {
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        .statut-attente { background: #f0ebe2; color: #b5a88e; }
+        .statut-acceptee { background: #e8f0ec; color: #7c9c8e; }
+        .statut-terminee { background: #e8f0ec; color: #7c9c8e; }
+        .statut-refusee { background: #f5e8e5; color: #b87a5a; }
+        .besoin-box {
+            background: #faf8f5;
+            border-radius: 14px;
+            padding: 12px;
+            margin: 12px 0;
+        }
+        .btn-avis {
+            background: #f0ebe2;
+            border: none;
+            border-radius: 30px;
+            padding: 6px 16px;
+            font-size: 0.75rem;
+            color: #c17b4c;
+            transition: all 0.15s;
+        }
+        .btn-avis:hover {
+            background: #c17b4c;
+            color: white;
+        }
+        .etoiles {
+            color: #d4a02b;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+    </style>
 </head>
-<body>
+<body style="background: #f4f1ea;">
 
 <?php include '../includes/navbar.php'; ?>
 
-<div class="container mt-4">
-    <h2><i class="fas fa-list-alt"></i> Mes demandes</h2>
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div>
+            <p style="font-size: 0.7rem; color: #c17b4c; letter-spacing: 1px;">CLIENT</p>
+            <h1 style="font-size: 1.8rem; font-weight: 600; color: #2c2b28;">Mes demandes</h1>
+            <p style="color: #8b8a86;">Suivez l'état de vos demandes de service</p>
+        </div>
+        <a href="explore.php" style="background: #c17b4c; color: white; border-radius: 40px; padding: 10px 20px; text-decoration: none; font-size: 0.85rem;">
+            <i class="fas fa-plus"></i> Nouvelle demande
+        </a>
+    </div>
     
     <?php if(count($demandes) == 0): ?>
-        <div class="alert alert-info">Vous n'avez aucune demande. <a href="explore.php">Explorer les services</a></div>
+        <div class="text-center py-5" style="background: #fffef7; border: 1px solid #e2dcd0; border-radius: 20px;">
+            <i class="fas fa-inbox fa-3x" style="color: #d4cdbe; margin-bottom: 1rem;"></i>
+            <p style="color: #8b8a86;">Vous n'avez pas encore fait de demande.</p>
+            <a href="explore.php" style="background: #c17b4c; color: white; border-radius: 40px; padding: 8px 20px; text-decoration: none; display: inline-block; margin-top: 10px;">Explorer les services</a>
+        </div>
     <?php else: ?>
         <?php foreach($demandes as $d): ?>
-            <div class="card mb-3">
-                <div class="card-header d-flex justify-content-between">
-                    <strong><?= htmlspecialchars($d['nom_service']) ?></strong>
-                    <span class="badge bg-<?= $d['statut']=='en attente'?'warning':($d['statut']=='acceptee'?'info':($d['statut']=='terminee'?'success':'danger')) ?>">
-                        <?= $d['statut'] ?>
+            <div class="demande-card">
+                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+                    <div>
+                        <h5 class="mb-1" style="font-weight: 600;"><?= htmlspecialchars($d['nom_service']) ?></h5>
+                        <div class="small" style="color: #8b8a86;">
+                            <i class="fas fa-user"></i> Prestataire : <?= htmlspecialchars($d['presta_prenom']) ?> <?= htmlspecialchars($d['presta_nom']) ?>
+                        </div>
+                    </div>
+                    <span class="statut-badge <?= $d['statut']=='en attente'?'statut-attente':($d['statut']=='acceptee'?'statut-acceptee':($d['statut']=='terminee'?'statut-terminee':'statut-refusee')) ?>">
+                        <?= $d['statut'] == 'en attente' ? '⏳ En attente' : ($d['statut'] == 'acceptee' ? '✅ Acceptée' : ($d['statut'] == 'terminee' ? '✨ Terminée' : '❌ Refusée')) ?>
                     </span>
                 </div>
-                <div class="card-body">
-                    <p><strong>Votre besoin :</strong> <?= nl2br(htmlspecialchars($d['description_besoin'])) ?></p>
-                    <p><strong>Prestataire :</strong> <?= htmlspecialchars($d['presta_prenom']) ?> <?= htmlspecialchars($d['presta_nom']) ?></p>
-                    <p class="text-muted">Envoyée le <?= date('d/m/Y H:i', strtotime($d['date_demande'])) ?></p>
+                
+                <div class="besoin-box">
+                    <div class="small" style="color: #8b8a86; margin-bottom: 5px;">📝 Votre besoin :</div>
+                    <p class="mb-0" style="font-size: 0.85rem;"><?= nl2br(htmlspecialchars($d['description_besoin'])) ?></p>
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div class="small" style="color: #b5a88e;">
+                        <i class="far fa-calendar-alt"></i> <?= date('d/m/Y à H:i', strtotime($d['date_demande'])) ?>
+                    </div>
                     
                     <?php if($d['statut'] == 'terminee' && !$d['id_avis']): ?>
-                        <a href="avis.php?id_demande=<?= $d['id_demande'] ?>" class="btn btn-warning btn-sm">⭐ Laisser un avis</a>
-                    <?php endif; ?>
-                    
-                    <?php if($d['id_avis']): ?>
-                        <div class="alert alert-light mt-2">
-                            <strong>Votre avis :</strong> <?= str_repeat('★', $d['note']) . str_repeat('☆', 5-$d['note']) ?><br>
-                            <?= nl2br(htmlspecialchars($d['commentaire'])) ?>
-                        </div>
+                        <a href="avis.php?id_demande=<?= $d['id_demande'] ?>" class="btn-avis">
+                            ⭐ Laisser un avis
+                        </a>
                     <?php endif; ?>
                 </div>
+                
+                <?php if($d['id_avis']): ?>
+                    <div class="mt-3 pt-2" style="border-top: 1px solid #f0ebe2;">
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <span class="small fw-bold">Votre avis :</span>
+                            <span class="etoiles">
+                                <?php for($i=1; $i<=5; $i++): ?>
+                                    <?= $i <= $d['note'] ? '★' : '☆' ?>
+                                <?php endfor; ?>
+                            </span>
+                        </div>
+                        <p class="small mt-1 mb-0" style="color: #8b8a86;">"<?= nl2br(htmlspecialchars($d['commentaire'])) ?>"</p>
+                    </div>
+                <?php endif; ?>
             </div>
         <?php endforeach; ?>
     <?php endif; ?>

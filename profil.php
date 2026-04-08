@@ -5,6 +5,7 @@ requireLogin();
 
 $user_id = $_SESSION['user_id'];
 $message = '';
+$erreur = '';
 
 $stmt = $pdo->prepare("SELECT * FROM Utilisateur WHERE id_utilisateur = ?");
 $stmt->execute([$user_id]);
@@ -50,72 +51,181 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mon profil - ServiLink</title>
+    <title>Mon profil - IvoireBara</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .carte-profil {
+            background: #fffef7;
+            border: 1px solid #e2dcd0;
+            border-radius: 24px;
+            padding: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+        .input-profil {
+            background: #fefcf8;
+            border: 1px solid #e2dcd0;
+            border-radius: 14px;
+            padding: 12px 16px;
+            width: 100%;
+            transition: all 0.15s;
+        }
+        .input-profil:focus {
+            border-color: #c17b4c;
+            outline: none;
+            background: white;
+        }
+        .input-disabled {
+            background: #f0ebe2;
+            border: 1px solid #e2dcd0;
+            border-radius: 14px;
+            padding: 12px 16px;
+            width: 100%;
+            color: #8b8a86;
+        }
+        .btn-maj {
+            background: #c17b4c;
+            border: none;
+            border-radius: 40px;
+            padding: 10px 24px;
+            color: white;
+            font-weight: 500;
+            transition: all 0.15s;
+        }
+        .btn-maj:hover {
+            background: #a05f38;
+        }
+        .btn-mdp {
+            background: #7c9c8e;
+            border: none;
+            border-radius: 40px;
+            padding: 10px 24px;
+            color: white;
+            font-weight: 500;
+            transition: all 0.15s;
+        }
+        .btn-mdp:hover {
+            background: #5c7c6e;
+        }
+        .alerte-succes {
+            background: #e8f0ec;
+            border-left: 3px solid #7c9c8e;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: #5c7c6e;
+            font-size: 0.85rem;
+        }
+        .alerte-erreur {
+            background: #f5e8e5;
+            border-left: 3px solid #b87a5a;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: #b87a5a;
+            font-size: 0.85rem;
+        }
+        .avatar-profil {
+            width: 80px;
+            height: 80px;
+            background: #f0ebe2;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #c17b4c;
+            margin: 0 auto 1rem;
+        }
+    </style>
 </head>
-<body>
+<body style="background: #f4f1ea;">
 
 <?php include 'includes/navbar.php'; ?>
 
-<div class="container mt-5">
+<div class="container py-5">
+    <div class="mb-4 text-center">
+        <p style="font-size: 0.7rem; color: #c17b4c; letter-spacing: 1px;">MON COMPTE</p>
+        <h1 style="font-size: 1.8rem; font-weight: 600; color: #2c2b28;">Mon profil</h1>
+        <p style="color: #8b8a86;">Gérez vos informations personnelles</p>
+    </div>
+    
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <i class="fas fa-user-circle"></i> Mon profil
+            <!-- Avatar -->
+            <div class="text-center mb-4">
+                <div class="avatar-profil">
+                    <?= strtoupper(substr($user['prenom'], 0, 1)) ?><?= strtoupper(substr($user['nom'], 0, 1)) ?>
                 </div>
-                <div class="card-body">
-                    <?php if($message): ?>
-                        <div class="alert alert-success"><?= $message ?></div>
-                    <?php endif; ?>
-                    
-                    <form method="POST">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label>Nom</label>
-                                <input type="text" name="nom" class="form-control" value="<?= htmlspecialchars($user['nom']) ?>" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label>Prénom</label>
-                                <input type="text" name="prenom" class="form-control" value="<?= htmlspecialchars($user['prenom']) ?>" required>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label>Email</label>
-                            <input type="email" class="form-control" value="<?= htmlspecialchars($user['email']) ?>" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <label>Téléphone</label>
-                            <input type="tel" name="telephone" class="form-control" value="<?= htmlspecialchars($user['telephone']) ?>" required>
-                        </div>
-                        <button type="submit" name="update" class="btn btn-primary">Mettre à jour</button>
-                    </form>
-                </div>
+                <div class="small text-muted">Membre depuis <?= date('F Y', strtotime($user['date_inscription'])) ?></div>
             </div>
             
-            <div class="card mt-4">
-                <div class="card-header bg-warning">
-                    <i class="fas fa-key"></i> Changer mon mot de passe
+            <?php if($message): ?>
+                <div class="alerte-succes mb-4">
+                    <i class="fas fa-check-circle me-2"></i> <?= $message ?>
                 </div>
-                <div class="card-body">
-                    <form method="POST">
-                        <div class="mb-3">
-                            <label>Ancien mot de passe</label>
-                            <input type="password" name="ancien_mdp" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label>Nouveau mot de passe</label>
-                            <input type="password" name="nouveau_mdp" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label>Confirmer</label>
-                            <input type="password" name="confirme_mdp" class="form-control" required>
-                        </div>
-                        <button type="submit" name="change_password" class="btn btn-warning">Changer</button>
-                    </form>
+            <?php endif; ?>
+            
+            <?php if($erreur): ?>
+                <div class="alerte-erreur mb-4">
+                    <i class="fas fa-exclamation-circle me-2"></i> <?= $erreur ?>
                 </div>
+            <?php endif; ?>
+            
+            <!-- Formulaire infos perso -->
+            <div class="carte-profil">
+                <div style="font-weight: 600; margin-bottom: 1.2rem; border-left: 3px solid #c17b4c; padding-left: 12px;">
+                    <i class="fas fa-user me-2"></i> Informations personnelles
+                </div>
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">Nom</label>
+                            <input type="text" name="nom" class="input-profil" value="<?= htmlspecialchars($user['nom']) ?>" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">Prénom</label>
+                            <input type="text" name="prenom" class="input-profil" value="<?= htmlspecialchars($user['prenom']) ?>" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">Email</label>
+                        <input type="email" class="input-disabled" value="<?= htmlspecialchars($user['email']) ?>" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">Téléphone</label>
+                        <input type="tel" name="telephone" class="input-profil" value="<?= htmlspecialchars($user['telephone']) ?>" required>
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" name="update" class="btn-maj">Mettre à jour</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Formulaire changement mot de passe -->
+            <div class="carte-profil">
+                <div style="font-weight: 600; margin-bottom: 1.2rem; border-left: 3px solid #c17b4c; padding-left: 12px;">
+                    <i class="fas fa-key me-2"></i> Changer mon mot de passe
+                </div>
+                <form method="POST">
+                    <div class="mb-3">
+                        <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">Ancien mot de passe</label>
+                        <input type="password" name="ancien_mdp" class="input-profil" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">Nouveau mot de passe</label>
+                            <input type="password" name="nouveau_mdp" class="input-profil" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">Confirmer</label>
+                            <input type="password" name="confirme_mdp" class="input-profil" required>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" name="change_password" class="btn-mdp">Changer le mot de passe</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

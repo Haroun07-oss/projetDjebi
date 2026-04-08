@@ -18,36 +18,102 @@ if(isset($_GET['supprimer'])) {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mes services - ServiLink</title>
+    <title>Mes services - IvoireBara</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        .carte-service-presta {
+            background: #fffef7;
+            border: 1px solid #e2dcd0;
+            border-radius: 20px;
+            padding: 1.2rem;
+            transition: all 0.2s;
+            height: 100%;
+        }
+        .carte-service-presta:hover {
+            border-color: #c17b4c;
+            transform: translateY(-3px);
+        }
+        .badge-cat {
+            background: #f0ebe2;
+            color: #8b8a86;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+        }
+        .prix-badge {
+            background: #fff0e6;
+            color: #c17b4c;
+            font-weight: 600;
+        }
+        .btn-suppr-service {
+            background: transparent;
+            border: 1px solid #f0ebe2;
+            border-radius: 30px;
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            color: #b87a5a;
+            transition: all 0.15s;
+        }
+        .btn-suppr-service:hover {
+            background: #f5e8e5;
+            border-color: #b87a5a;
+        }
+        .btn-ajout-header {
+            background: #c17b4c;
+            color: white;
+            border-radius: 40px;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.15s;
+            display: inline-block;
+        }
+        .btn-ajout-header:hover {
+            background: #a05f38;
+        }
+    </style>
 </head>
-<body>
+<body style="background: #f4f1ea;">
 
 <?php include '../includes/navbar.php'; ?>
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between mb-4">
-        <h2><i class="fas fa-box"></i> Mes services</h2>
-        <a href="ajouter_service.php" class="btn btn-success"><i class="fas fa-plus"></i> Ajouter</a>
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div>
+            <p style="font-size: 0.7rem; color: #c17b4c; letter-spacing: 1px;">PRESTATAIRE</p>
+            <h1 style="font-size: 1.8rem; font-weight: 600; color: #2c2b28;">Mes services</h1>
+            <p style="color: #8b8a86;"><?= count($services) ?> service<?= count($services) > 1 ? 's' : '' ?> proposé<?= count($services) > 1 ? 's' : '' ?></p>
+        </div>
+        <a href="ajouter_service.php" class="btn-ajout-header">
+            <i class="fas fa-plus"></i> Nouveau service
+        </a>
     </div>
     
     <?php if(count($services) == 0): ?>
-        <div class="alert alert-info">Vous n'avez aucun service. <a href="ajouter_service.php">Ajoutez votre premier service</a></div>
+        <div class="text-center py-5" style="background: #fffef7; border: 1px solid #e2dcd0; border-radius: 20px;">
+            <i class="fas fa-box-open fa-3x" style="color: #d4cdbe; margin-bottom: 1rem;"></i>
+            <p style="color: #8b8a86;">Vous n'avez aucun service pour le moment.</p>
+            <a href="ajouter_service.php" style="background: #c17b4c; color: white; border-radius: 40px; padding: 8px 20px; text-decoration: none; display: inline-block; margin-top: 10px;">Ajouter mon premier service</a>
+        </div>
     <?php else: ?>
-        <div class="row">
+        <div class="row g-4">
             <?php foreach($services as $s): ?>
-                <div class="col-md-6 mb-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5><?= htmlspecialchars($s['nom_service']) ?></h5>
-                            <span class="badge bg-secondary"><?= htmlspecialchars($s['nom_categorie']) ?></span>
+                <div class="col-md-6 col-lg-4">
+                    <div class="carte-service-presta">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge-cat"><?= htmlspecialchars($s['nom_categorie']) ?></span>
                             <?php if($s['prix_estime']): ?>
-                                <span class="badge bg-info"><?= $s['prix_estime'] ?> €</span>
+                                <span class="badge-cat prix-badge"><?= number_format($s['prix_estime'], 0, ',', ' ') ?> CFA</span>
                             <?php endif; ?>
-                            <p class="mt-2"><?= nl2br(htmlspecialchars(substr($s['description_service'], 0, 100))) ?>...</p>
-                            <a href="?supprimer=<?= $s['id_service'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Supprimer ?')">Supprimer</a>
+                        </div>
+                        <h5 class="mb-2" style="font-weight: 600;"><?= htmlspecialchars($s['nom_service']) ?></h5>
+                        <p class="text-muted small mb-3"><?= nl2br(htmlspecialchars(substr($s['description_service'], 0, 100))) ?>...</p>
+                        <div class="d-flex justify-content-end">
+                            <a href="?supprimer=<?= $s['id_service'] ?>" class="btn-suppr-service" onclick="return confirm('Supprimer ce service ?')">
+                                <i class="fas fa-trash-alt me-1"></i> Supprimer
+                            </a>
                         </div>
                     </div>
                 </div>

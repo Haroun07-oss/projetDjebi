@@ -37,40 +37,101 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Connexion - ServiLink</title>
+    <title>Connexion - IvoireBara</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        body {
+            background: #f4f1ea;
+        }
+        .carte-connexion {
+            background: #fffef7;
+            border: 1px solid #e2dcd0;
+            border-radius: 28px;
+            padding: 2rem;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+        .input-auth {
+            background: #fefcf8;
+            border: 1px solid #e2dcd0;
+            border-radius: 14px;
+            padding: 12px 16px;
+            width: 100%;
+            transition: all 0.15s;
+        }
+        .input-auth:focus {
+            border-color: #c17b4c;
+            outline: none;
+            background: white;
+        }
+        .btn-connexion {
+            background: #c17b4c;
+            border: none;
+            border-radius: 40px;
+            padding: 12px;
+            width: 100%;
+            color: white;
+            font-weight: 500;
+            transition: all 0.15s;
+        }
+        .btn-connexion:hover {
+            background: #a05f38;
+        }
+        .lien-inscription {
+            color: #c17b4c;
+            text-decoration: none;
+        }
+        .lien-inscription:hover {
+            text-decoration: underline;
+        }
+        .alerte-erreur {
+            background: #f5e8e5;
+            border-left: 3px solid #b87a5a;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: #b87a5a;
+            font-size: 0.85rem;
+        }
+    </style>
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="card shadow">
-                <div class="card-header text-center">
-                    <h4><i class="fas fa-sign-in-alt"></i> Connexion</h4>
-                </div>
-                <div class="card-body">
-                    <?php if($erreur): ?>
-                        <div class="alert alert-danger"><?= $erreur ?></div>
-                    <?php endif; ?>
-                    <form method="POST">
-                        <div class="mb-3">
-                            <label>Email</label>
-                            <input type="email" name="email" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label>Mot de passe</label>
-                            <input type="password" name="mot_de_passe" class="form-control" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Se connecter</button>
-                    </form>
-                    <div class="text-center mt-3">
-                        Pas encore de compte ? <a href="register.php">Inscrivez-vous</a>
-                    </div>
-                </div>
+<div class="container py-5">
+    <div class="text-center mb-4">
+        <a href="../index.php" style="text-decoration: none;">
+            <h2 style="color: #2c2b28; font-weight: 700;">Ivoire<span style="color: #c17b4c;">Bara</span></h2>
+        </a>
+    </div>
+    
+    <div class="carte-connexion">
+        <div class="text-center mb-4">
+            <i class="fas fa-handshake fa-2x" style="color: #c17b4c;"></i>
+            <h3 style="font-weight: 600; margin-top: 10px;">Connexion</h3>
+            <p style="color: #8b8a86; font-size: 0.85rem;">Ravis de vous revoir 👋</p>
+        </div>
+        
+        <?php if($erreur): ?>
+            <div class="alerte-erreur mb-4">
+                <i class="fas fa-exclamation-circle me-2"></i> <?= $erreur ?>
             </div>
+        <?php endif; ?>
+        
+        <form method="POST">
+            <div class="mb-3">
+                <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">Email</label>
+                <input type="email" name="email" class="input-auth" required>
+            </div>
+            <div class="mb-4">
+                <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">Mot de passe</label>
+                <input type="password" name="mot_de_passe" class="input-auth" required>
+            </div>
+            <button type="submit" class="btn-connexion">Se connecter</button>
+        </form>
+        
+        <div class="text-center mt-4" style="font-size: 0.85rem; color: #8b8a86;">
+            Pas encore de compte ? <a href="register.php" class="lien-inscription">Inscrivez-vous</a>
         </div>
     </div>
 </div>
