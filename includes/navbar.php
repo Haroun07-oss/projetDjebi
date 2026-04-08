@@ -24,8 +24,8 @@
                                 <i class="fas fa-concierge-bell me-1"></i> Services
                             </a>
                             <ul class="dropdown-menu" style="border: 1px solid #e2dcd0; border-radius: 16px; background: white; padding: 8px;">
-                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/client/explore.php" style="border-radius: 12px; padding: 8px 16px;">🔍 Explorer</a></li>
-                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/client/mes_demandes.php" style="border-radius: 12px; padding: 8px 16px;">📋 Mes demandes</a></li>
+                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/client/explore.php" style="border-radius: 12px; padding: 8px 16px;"><i class="fas fa-search me-2"></i> Explorer</a></li>
+                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/client/mes_demandes.php" style="border-radius: 12px; padding: 8px 16px;"><i class="fas fa-list-alt me-2"></i> Mes demandes</a></li>
                             </ul>
                         </li>
                     
@@ -35,10 +35,10 @@
                                 <i class="fas fa-tools me-1"></i> Gestion
                             </a>
                             <ul class="dropdown-menu" style="border: 1px solid #e2dcd0; border-radius: 16px; background: white; padding: 8px;">
-                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/prestataire/mes_services.php" style="border-radius: 12px; padding: 8px 16px;">📦 Mes services</a></li>
-                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/prestataire/ajouter_service.php" style="border-radius: 12px; padding: 8px 16px;">➕ Ajouter</a></li>
+                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/prestataire/mes_services.php" style="border-radius: 12px; padding: 8px 16px;"><i class="fas fa-box me-2"></i> Mes services</a></li>
+                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/prestataire/ajouter_service.php" style="border-radius: 12px; padding: 8px 16px;"><i class="fas fa-plus-circle me-2"></i> Ajouter</a></li>
                                 <li><hr class="dropdown-divider" style="margin: 6px 0;"></li>
-                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/prestataire/demandes_recues.php" style="border-radius: 12px; padding: 8px 16px;">📩 Demandes reçues</a></li>
+                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/prestataire/demandes_recues.php" style="border-radius: 12px; padding: 8px 16px;"><i class="fas fa-envelope me-2"></i> Demandes reçues</a></li>
                             </ul>
                         </li>
                     
@@ -48,9 +48,9 @@
                                 <i class="fas fa-shield-alt me-1"></i> Admin
                             </a>
                             <ul class="dropdown-menu" style="border: 1px solid #e2dcd0; border-radius: 16px; background: white; padding: 8px;">
-                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/admin/utilisateurs.php" style="border-radius: 12px; padding: 8px 16px;">👥 Utilisateurs</a></li>
-                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/admin/categories.php" style="border-radius: 12px; padding: 8px 16px;">📁 Catégories</a></li>
-                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/admin/statistiques.php" style="border-radius: 12px; padding: 8px 16px;">📊 Statistiques</a></li>
+                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/admin/utilisateurs.php" style="border-radius: 12px; padding: 8px 16px;"><i class="fas fa-users me-2"></i> Utilisateurs</a></li>
+                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/admin/categories.php" style="border-radius: 12px; padding: 8px 16px;"><i class="fas fa-tags me-2"></i> Catégories</a></li>
+                                <li><a class="dropdown-item" href="<?= BASE_URL ?>/admin/statistiques.php" style="border-radius: 12px; padding: 8px 16px;"><i class="fas fa-chart-line me-2"></i> Statistiques</a></li>
                             </ul>
                         </li>
                     <?php endif; ?>
@@ -63,22 +63,22 @@
                             <span><?= htmlspecialchars($_SESSION['user_prenom']) ?></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" style="border: 1px solid #e2dcd0; border-radius: 16px; background: white; padding: 8px;">
-                            <li><a class="dropdown-item" href="<?= BASE_URL ?>/profil.php" style="border-radius: 12px; padding: 8px 16px;">👤 Mon profil</a></li>
-                            <li><a class="dropdown-item" href="<?= BASE_URL ?>/dashboard.php" style="border-radius: 12px; padding: 8px 16px;">📊 Tableau de bord</a></li>
+                            <li><a class="dropdown-item" href="<?= BASE_URL ?>/profil.php" style="border-radius: 12px; padding: 8px 16px;"><i class="fas fa-user-circle me-2"></i> Mon profil</a></li>
+                            <li><a class="dropdown-item" href="<?= BASE_URL ?>/dashboard.php" style="border-radius: 12px; padding: 8px 16px;"><i class="fas fa-tachometer-alt me-2"></i> Tableau de bord</a></li>
                             <li><hr class="dropdown-divider" style="margin: 6px 0;"></li>
-                            <li><a class="dropdown-item text-danger" href="<?= BASE_URL ?>/auth/logout.php" style="border-radius: 12px; padding: 8px 16px;">🚪 Déconnexion</a></li>
+                            <li><a class="dropdown-item text-danger" href="<?= BASE_URL ?>/auth/logout.php" style="border-radius: 12px; padding: 8px 16px;"><i class="fas fa-sign-out-alt me-2"></i> Déconnexion</a></li>
                         </ul>
                     </li>
                     
                 <?php else: ?>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= BASE_URL ?>/auth/login.php" style="background: transparent; border: 1px solid #c17b4c; border-radius: 40px; padding: 8px 22px; color: #c17b4c;">
-                            Connexion
+                            <i class="fas fa-sign-in-alt me-1"></i> Connexion
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= BASE_URL ?>/auth/register.php" style="background: #c17b4c; border-radius: 40px; padding: 8px 22px; color: white;">
-                            Inscription
+                            <i class="fas fa-user-plus me-1"></i> Inscription
                         </a>
                     </li>
                 <?php endif; ?>

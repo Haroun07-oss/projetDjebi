@@ -87,7 +87,7 @@ if(isset($_GET['supprimer'])) {
             <p style="color: #8b8a86;"><?= count($services) ?> service<?= count($services) > 1 ? 's' : '' ?> proposé<?= count($services) > 1 ? 's' : '' ?></p>
         </div>
         <a href="ajouter_service.php" class="btn-ajout-header">
-            <i class="fas fa-plus"></i> Nouveau service
+            <i class="fas fa-plus-circle me-2"></i> Nouveau service
         </a>
     </div>
     
@@ -95,7 +95,7 @@ if(isset($_GET['supprimer'])) {
         <div class="text-center py-5" style="background: #fffef7; border: 1px solid #e2dcd0; border-radius: 20px;">
             <i class="fas fa-box-open fa-3x" style="color: #d4cdbe; margin-bottom: 1rem;"></i>
             <p style="color: #8b8a86;">Vous n'avez aucun service pour le moment.</p>
-            <a href="ajouter_service.php" style="background: #c17b4c; color: white; border-radius: 40px; padding: 8px 20px; text-decoration: none; display: inline-block; margin-top: 10px;">Ajouter mon premier service</a>
+            <a href="ajouter_service.php" style="background: #c17b4c; color: white; border-radius: 40px; padding: 8px 20px; text-decoration: none; display: inline-block; margin-top: 10px;"><i class="fas fa-plus me-2"></i>Ajouter mon premier service</a>
         </div>
     <?php else: ?>
         <div class="row g-4">
@@ -103,9 +103,9 @@ if(isset($_GET['supprimer'])) {
                 <div class="col-md-6 col-lg-4">
                     <div class="carte-service-presta">
                         <div class="d-flex justify-content-between align-items-start mb-2">
-                            <span class="badge-cat"><?= htmlspecialchars($s['nom_categorie']) ?></span>
+                            <span class="badge-cat"><i class="fas fa-tag me-1"></i> <?= htmlspecialchars($s['nom_categorie']) ?></span>
                             <?php if($s['prix_estime']): ?>
-                                <span class="badge-cat prix-badge"><?= number_format($s['prix_estime'], 0, ',', ' ') ?> CFA</span>
+                                <span class="badge-cat prix-badge"><i class="fas fa-money-bill-wave me-1"></i> <?= number_format($s['prix_estime'], 0, ',', ' ') ?> CFA</span>
                             <?php endif; ?>
                         </div>
                         <h5 class="mb-2" style="font-weight: 600;"><?= htmlspecialchars($s['nom_service']) ?></h5>

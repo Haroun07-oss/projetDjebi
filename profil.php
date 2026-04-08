@@ -157,7 +157,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                 <div class="avatar-profil">
                     <?= strtoupper(substr($user['prenom'], 0, 1)) ?><?= strtoupper(substr($user['nom'], 0, 1)) ?>
                 </div>
-                <div class="small text-muted">Membre depuis <?= date('F Y', strtotime($user['date_inscription'])) ?></div>
+                <div class="small text-muted"><i class="far fa-calendar-alt me-1"></i> Membre depuis <?= date('F Y', strtotime($user['date_inscription'])) ?></div>
             </div>
             
             <?php if($message): ?>
@@ -175,7 +175,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
             <!-- Formulaire infos perso -->
             <div class="carte-profil">
                 <div style="font-weight: 600; margin-bottom: 1.2rem; border-left: 3px solid #c17b4c; padding-left: 12px;">
-                    <i class="fas fa-user me-2"></i> Informations personnelles
+                    <i class="fas fa-user-circle me-2"></i> Informations personnelles
                 </div>
                 <form method="POST">
                     <div class="row">
@@ -197,7 +197,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                         <input type="tel" name="telephone" class="input-profil" value="<?= htmlspecialchars($user['telephone']) ?>" required>
                     </div>
                     <div class="text-end">
-                        <button type="submit" name="update" class="btn-maj">Mettre à jour</button>
+                        <button type="submit" name="update" class="btn-maj"><i class="fas fa-save me-2"></i> Mettre à jour</button>
                     </div>
                 </form>
             </div>
@@ -223,7 +223,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                         </div>
                     </div>
                     <div class="text-end">
-                        <button type="submit" name="change_password" class="btn-mdp">Changer le mot de passe</button>
+                        <button type="submit" name="change_password" class="btn-mdp"><i class="fas fa-unlock-alt me-2"></i> Changer le mot de passe</button>
                     </div>
                 </form>
             </div>

@@ -89,11 +89,11 @@
                 <p style="color: #8b8a86; margin-top: 1rem; font-size: 1.1rem;">Que vous cherchiez un service ou que vous vouliez proposer le vôtre, IvoireBara connecte les talents de Côte d'Ivoire.</p>
                 <?php if(!isset($_SESSION['user_id'])): ?>
                     <div class="d-flex gap-3 justify-content-center flex-wrap mt-4">
-                        <a href="auth/register.php" class="btn-accueil">👋 Je m'inscris</a>
-                        <a href="auth/login.php" class="btn-outline-accueil">🔐 Déjà inscrit</a>
+                        <a href="auth/register.php" class="btn-accueil"><i class="fas fa-user-plus me-2"></i> Je m'inscris</a>
+                        <a href="auth/login.php" class="btn-outline-accueil"><i class="fas fa-sign-in-alt me-2"></i> Déjà inscrit</a>
                     </div>
                 <?php else: ?>
-                    <a href="dashboard.php" class="btn-accueil mt-3 d-inline-block">📋 Accéder à mon tableau</a>
+                    <a href="dashboard.php" class="btn-accueil mt-3 d-inline-block"><i class="fas fa-tachometer-alt me-2"></i> Accéder à mon tableau</a>
                 <?php endif; ?>
             </div>
         </div>

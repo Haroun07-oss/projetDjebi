@@ -101,7 +101,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if($message): ?>
             <div class="alerte-succes mb-4">
                 <i class="fas fa-check-circle me-2"></i> <?= $message ?>
-                <div class="mt-2"><a href="mes_services.php" style="color: #c17b4c;">Voir mes services →</a></div>
+                <div class="mt-2"><a href="mes_services.php" style="color: #c17b4c;">Voir mes services <i class="fas fa-arrow-right"></i></a></div>
             </div>
         <?php endif; ?>
         
@@ -134,7 +134,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             
             <div class="d-flex gap-3 mt-4">
-                <button type="submit" class="btn-ajout">📌 Publier le service</button>
+                <button type="submit" class="btn-ajout"><i class="fas fa-save me-2"></i> Publier le service</button>
                 <a href="mes_services.php" class="btn-annuler">Annuler</a>
             </div>
         </form>

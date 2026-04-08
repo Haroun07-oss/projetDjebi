@@ -76,6 +76,8 @@ $users = $pdo->query("SELECT * FROM Utilisateur WHERE role != 'admin' ORDER BY d
             border-radius: 30px;
             transition: all 0.15s;
             cursor: pointer;
+            display: inline-block;
+            text-decoration: none;
         }
         .btn-activer { color: #7c9c8e; }
         .btn-activer:hover { background: #e8f0ec; }
@@ -101,7 +103,7 @@ $users = $pdo->query("SELECT * FROM Utilisateur WHERE role != 'admin' ORDER BY d
         <p style="font-size: 0.7rem; color: #c17b4c; letter-spacing: 1px;">ADMINISTRATION</p>
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
-                <h1 style="font-size: 1.8rem; font-weight: 600; color: #2c2b28;">👥 Utilisateurs</h1>
+                <h1 style="font-size: 1.8rem; font-weight: 600; color: #2c2b28;"><i class="fas fa-users-cog me-2"></i> Utilisateurs</h1>
                 <p style="color: #8b8a86;">Gérez les comptes de la plateforme</p>
             </div>
             <div class="compteur-badge">
@@ -114,7 +116,15 @@ $users = $pdo->query("SELECT * FROM Utilisateur WHERE role != 'admin' ORDER BY d
         <div class="table-responsive">
             <table class="table-utilisateurs">
                 <thead>
-                    <tr><th>ID</th><th>Nom complet</th><th>Email</th><th>Téléphone</th><th>Rôle</th><th>Statut</th><th>Actions</th></tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom complet</th>
+                        <th>Email</th>
+                        <th>Téléphone</th>
+                        <th>Rôle</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
                 </thead>
                 <tbody>
                     <?php foreach($users as $u): ?>
@@ -125,12 +135,12 @@ $users = $pdo->query("SELECT * FROM Utilisateur WHERE role != 'admin' ORDER BY d
                         <td><?= htmlspecialchars($u['telephone']) ?></td>
                         <td>
                             <span class="badge-role <?= $u['role']=='prestataire'?'badge-presta':'badge-client' ?>">
-                                <?= $u['role'] == 'prestataire' ? '🔧 Prestataire' : '👤 Client' ?>
+                                <?= $u['role'] == 'prestataire' ? '<i class="fas fa-tools me-1"></i> Prestataire' : '<i class="fas fa-user me-1"></i> Client' ?>
                             </span>
                         </td>
                         <td>
                             <span class="badge-role <?= $u['statut_compte']=='actif'?'badge-actif':'badge-inactif' ?>">
-                                <?= $u['statut_compte'] == 'actif' ? 'Actif' : 'Inactif' ?>
+                                <?= $u['statut_compte'] == 'actif' ? '<i class="fas fa-check-circle me-1"></i> Actif' : '<i class="fas fa-ban me-1"></i> Inactif' ?>
                             </span>
                         </td>
                         <td>

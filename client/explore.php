@@ -90,18 +90,18 @@ $categories = $pdo->query("SELECT * FROM Categorie ORDER BY nom_categorie")->fet
 <div class="container py-5">
     <div class="mb-4">
         <p style="font-size: 0.7rem; color: #c17b4c; letter-spacing: 1px;">CLIENT</p>
-        <h1 style="font-size: 1.8rem; font-weight: 600; color: #2c2b28;">Explorer les services</h1>
+        <h1 style="font-size: 1.8rem; font-weight: 600; color: #2c2b28;"><i class="fas fa-search me-2"></i> Explorer les services</h1>
         <p style="color: #8b8a86;">Trouvez le professionnel qu'il vous faut</p>
     </div>
     
     <div class="filtre-card mb-5">
         <form method="GET" class="row g-3">
             <div class="col-md-6">
-                <input type="text" name="recherche" class="form-control" style="background: #fefcf8; border: 1px solid #e2dcd0; border-radius: 14px; padding: 12px;" placeholder="🔍 Que recherchez-vous ?" value="<?= htmlspecialchars($recherche) ?>">
+                <input type="text" name="recherche" class="form-control" style="background: #fefcf8; border: 1px solid #e2dcd0; border-radius: 14px; padding: 12px;" placeholder="Que recherchez-vous ?" value="<?= htmlspecialchars($recherche) ?>">
             </div>
             <div class="col-md-4">
                 <select name="categorie" class="form-select" style="background: #fefcf8; border: 1px solid #e2dcd0; border-radius: 14px; padding: 12px;">
-                    <option value="0">📁 Toutes les catégories</option>
+                    <option value="0"><i class="fas fa-folder me-1"></i> Toutes les catégories</option>
                     <?php foreach($categories as $cat): ?>
                         <option value="<?= $cat['id_categorie'] ?>" <?= $categorie_id == $cat['id_categorie'] ? 'selected' : '' ?>>
                             <?= htmlspecialchars($cat['nom_categorie']) ?>
@@ -111,7 +111,7 @@ $categories = $pdo->query("SELECT * FROM Categorie ORDER BY nom_categorie")->fet
             </div>
             <div class="col-md-2">
                 <button type="submit" style="background: #c17b4c; border: none; border-radius: 40px; padding: 12px; width: 100%; color: white; font-weight: 500;">
-                    <i class="fas fa-search"></i> Filtrer
+                    <i class="fas fa-filter me-1"></i> Filtrer
                 </button>
             </div>
         </form>
@@ -121,7 +121,7 @@ $categories = $pdo->query("SELECT * FROM Categorie ORDER BY nom_categorie")->fet
         <div class="text-center py-5" style="background: #fffef7; border: 1px solid #e2dcd0; border-radius: 20px;">
             <i class="fas fa-folder-open fa-3x" style="color: #d4cdbe; margin-bottom: 1rem;"></i>
             <p style="color: #8b8a86;">Aucun service trouvé pour le moment.</p>
-            <a href="explore.php" style="color: #c17b4c; text-decoration: none;">Réinitialiser les filtres</a>
+            <a href="explore.php" style="color: #c17b4c; text-decoration: none;"><i class="fas fa-sync-alt me-1"></i> Réinitialiser les filtres</a>
         </div>
     <?php else: ?>
         <div class="row g-4">
@@ -129,19 +129,19 @@ $categories = $pdo->query("SELECT * FROM Categorie ORDER BY nom_categorie")->fet
                 <div class="col-md-6 col-lg-4">
                     <div class="service-item">
                         <div class="d-flex justify-content-between align-items-start mb-2">
-                            <span class="badge-cat"><?= htmlspecialchars($service['nom_categorie']) ?></span>
+                            <span class="badge-cat"><i class="fas fa-tag me-1"></i> <?= htmlspecialchars($service['nom_categorie']) ?></span>
                             <?php if($service['prix_estime']): ?>
-                                <span class="badge-cat prix-badge"><?= number_format($service['prix_estime'], 0, ',', ' ') ?> CFA</span>
+                                <span class="badge-cat prix-badge"><i class="fas fa-money-bill-wave me-1"></i> <?= number_format($service['prix_estime'], 0, ',', ' ') ?> CFA</span>
                             <?php endif; ?>
                         </div>
                         <h5 class="mb-2" style="font-weight: 600;"><?= htmlspecialchars($service['nom_service']) ?></h5>
                         <p class="text-muted small mb-3"><?= nl2br(htmlspecialchars(substr($service['description_service'], 0, 100))) ?>...</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="small" style="color: #8b8a86;">
-                                <i class="fas fa-user"></i> <?= htmlspecialchars($service['prenom']) ?>
+                                <i class="fas fa-user me-1"></i> <?= htmlspecialchars($service['prenom']) ?>
                             </div>
                             <a href="faire_demande.php?service_id=<?= $service['id_service'] ?>" class="btn-demande">
-                                📩 Demander
+                                <i class="fas fa-paper-plane me-1"></i> Demander
                             </a>
                         </div>
                     </div>

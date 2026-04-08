@@ -106,7 +106,7 @@ $demandes = $stmt->fetchAll();
 <div class="container py-5">
     <div class="mb-4">
         <p style="font-size: 0.7rem; color: #c17b4c; letter-spacing: 1px;">PRESTATAIRE</p>
-        <h1 style="font-size: 1.8rem; font-weight: 600; color: #2c2b28;">📩 Demandes reçues</h1>
+        <h1 style="font-size: 1.8rem; font-weight: 600; color: #2c2b28;"><i class="fas fa-inbox me-2"></i> Demandes reçues</h1>
         <p style="color: #8b8a86;">Répondez aux demandes de vos clients</p>
     </div>
     
@@ -114,7 +114,7 @@ $demandes = $stmt->fetchAll();
         <div class="text-center py-5" style="background: #fffef7; border: 1px solid #e2dcd0; border-radius: 20px;">
             <i class="fas fa-envelope-open-text fa-3x" style="color: #d4cdbe; margin-bottom: 1rem;"></i>
             <p style="color: #8b8a86;">Aucune demande reçue pour le moment.</p>
-            <a href="mes_services.php" style="color: #c17b4c; text-decoration: none;">Voir mes services</a>
+            <a href="mes_services.php" style="color: #c17b4c; text-decoration: none;"><i class="fas fa-box me-1"></i> Voir mes services</a>
         </div>
     <?php else: ?>
         <?php foreach($demandes as $d): ?>
@@ -123,33 +123,33 @@ $demandes = $stmt->fetchAll();
                     <div>
                         <h5 class="mb-1" style="font-weight: 600;"><?= htmlspecialchars($d['nom_service']) ?></h5>
                         <div class="small" style="color: #8b8a86;">
-                            <i class="fas fa-user"></i> Client : <?= htmlspecialchars($d['prenom']) ?> <?= htmlspecialchars($d['nom']) ?>
+                            <i class="fas fa-user me-1"></i> Client : <?= htmlspecialchars($d['prenom']) ?> <?= htmlspecialchars($d['nom']) ?>
                         </div>
                     </div>
                     <span class="statut-badge <?= $d['statut']=='en attente'?'statut-attente':($d['statut']=='acceptee'?'statut-acceptee':($d['statut']=='terminee'?'statut-terminee':'statut-refusee')) ?>">
-                        <?= $d['statut'] == 'en attente' ? '⏳ En attente' : ($d['statut'] == 'acceptee' ? '✅ Acceptée' : ($d['statut'] == 'terminee' ? '✨ Terminée' : '❌ Refusée')) ?>
+                        <?= $d['statut'] == 'en attente' ? '<i class="fas fa-hourglass-half me-1"></i> En attente' : ($d['statut'] == 'acceptee' ? '<i class="fas fa-check-circle me-1"></i> Acceptée' : ($d['statut'] == 'terminee' ? '<i class="fas fa-check-double me-1"></i> Terminée' : '<i class="fas fa-times-circle me-1"></i> Refusée')) ?>
                     </span>
                 </div>
                 
                 <div class="besoin-box">
-                    <div class="small" style="color: #8b8a86; margin-bottom: 5px;">📋 Besoin du client :</div>
+                    <div class="small" style="color: #8b8a86; margin-bottom: 5px;"><i class="fas fa-pencil-alt me-1"></i> Besoin du client :</div>
                     <p class="mb-0" style="font-size: 0.85rem;"><?= nl2br(htmlspecialchars($d['description_besoin'])) ?></p>
                 </div>
                 
                 <div class="info-client">
-                    <i class="fas fa-phone"></i> <?= htmlspecialchars($d['telephone']) ?> &nbsp;|&nbsp;
-                    <i class="fas fa-envelope"></i> <?= htmlspecialchars($d['email']) ?>
+                    <i class="fas fa-phone me-1"></i> <?= htmlspecialchars($d['telephone']) ?> &nbsp;|&nbsp;
+                    <i class="fas fa-envelope me-1"></i> <?= htmlspecialchars($d['email']) ?>
                 </div>
                 
                 <?php if($d['statut'] == 'en attente'): ?>
                     <form method="POST" class="mt-3 d-flex gap-2 flex-wrap">
                         <input type="hidden" name="id_demande" value="<?= $d['id_demande'] ?>">
                         <select name="nouveau_statut" class="form-select-perso">
-                            <option value="acceptee">✅ Accepter la demande</option>
-                            <option value="refusee">❌ Refuser</option>
+                            <option value="acceptee"><i class="fas fa-check-circle"></i> Accepter la demande</option>
+                            <option value="refusee"><i class="fas fa-times-circle"></i> Refuser</option>
                         </select>
                         <button type="submit" name="changer_statut" class="btn-valider">
-                            Valider
+                            <i class="fas fa-check me-1"></i> Valider
                         </button>
                     </form>
                 <?php elseif($d['statut'] == 'acceptee'): ?>
@@ -157,7 +157,7 @@ $demandes = $stmt->fetchAll();
                         <input type="hidden" name="id_demande" value="<?= $d['id_demande'] ?>">
                         <input type="hidden" name="nouveau_statut" value="terminee">
                         <button type="submit" name="changer_statut" class="btn-terminer">
-                            ✔️ Marquer comme terminée
+                            <i class="fas fa-check-double me-1"></i> Marquer comme terminée
                         </button>
                     </form>
                 <?php endif; ?>

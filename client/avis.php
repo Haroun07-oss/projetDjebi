@@ -113,14 +113,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="container py-5">
     <div class="mb-4 text-center">
         <p style="font-size: 0.7rem; color: #c17b4c; letter-spacing: 1px;">CLIENT</p>
-        <h1 style="font-size: 1.8rem; font-weight: 600; color: #2c2b28;">⭐ Laisser un avis</h1>
+        <h1 style="font-size: 1.8rem; font-weight: 600; color: #2c2b28;"><i class="fas fa-star me-2"></i> Laisser un avis</h1>
         <p style="color: #8b8a86;">Partagez votre expérience avec la communauté</p>
     </div>
     
     <div class="carte-avis">
         <div class="info-service-avis">
             <div class="text-center">
-                <span style="background: #f0ebe2; padding: 3px 10px; border-radius: 30px; font-size: 0.7rem;">Service terminé</span>
+                <span style="background: #f0ebe2; padding: 3px 10px; border-radius: 30px; font-size: 0.7rem;"><i class="fas fa-check-circle me-1"></i> Service terminé</span>
                 <h5 class="mt-2 mb-0" style="font-weight: 600;"><?= htmlspecialchars($demande['nom_service']) ?></h5>
             </div>
         </div>
@@ -129,22 +129,22 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="mb-4 text-center">
                 <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 10px; display: block;">Votre note</label>
                 <div class="star-rating justify-content-center">
-                    <input type="radio" id="star5" name="note" value="5" required><label for="star5">★</label>
-                    <input type="radio" id="star4" name="note" value="4"><label for="star4">★</label>
-                    <input type="radio" id="star3" name="note" value="3"><label for="star3">★</label>
-                    <input type="radio" id="star2" name="note" value="2"><label for="star2">★</label>
-                    <input type="radio" id="star1" name="note" value="1"><label for="star1">★</label>
+                    <input type="radio" id="star5" name="note" value="5" required><label for="star5"><i class="fas fa-star"></i></label>
+                    <input type="radio" id="star4" name="note" value="4"><label for="star4"><i class="fas fa-star"></i></label>
+                    <input type="radio" id="star3" name="note" value="3"><label for="star3"><i class="fas fa-star"></i></label>
+                    <input type="radio" id="star2" name="note" value="2"><label for="star2"><i class="fas fa-star"></i></label>
+                    <input type="radio" id="star1" name="note" value="1"><label for="star1"><i class="fas fa-star"></i></label>
                 </div>
             </div>
             
             <div class="mb-4">
-                <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">💬 Votre commentaire</label>
+                <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;"><i class="fas fa-comment me-1"></i> Votre commentaire</label>
                 <textarea name="commentaire" rows="4" class="input-avis" required placeholder="Qu'avez-vous pensé du service ? Le prestataire était-il professionnel ? ..."></textarea>
             </div>
             
             <div class="d-flex gap-3 justify-content-end">
-                <a href="mes_demandes.php" class="btn-skipper">Plus tard</a>
-                <button type="submit" class="btn-publier">📝 Publier l'avis</button>
+                <a href="mes_demandes.php" class="btn-skipper"><i class="fas fa-clock me-1"></i> Plus tard</a>
+                <button type="submit" class="btn-publier"><i class="fas fa-paper-plane me-2"></i> Publier l'avis</button>
             </div>
         </form>
         

@@ -111,15 +111,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="info-service">
             <div class="d-flex justify-content-between align-items-center flex-wrap">
                 <div>
-                    <span style="background: #f0ebe2; padding: 3px 10px; border-radius: 30px; font-size: 0.7rem;">Service</span>
+                    <span style="background: #f0ebe2; padding: 3px 10px; border-radius: 30px; font-size: 0.7rem;"><i class="fas fa-concierge-bell me-1"></i> Service</span>
                     <h5 class="mt-2 mb-1" style="font-weight: 600;"><?= htmlspecialchars($service['nom_service']) ?></h5>
                     <div class="small" style="color: #8b8a86;">
-                        <i class="fas fa-user"></i> Proposé par <?= htmlspecialchars($service['prenom']) ?> <?= htmlspecialchars($service['nom']) ?>
+                        <i class="fas fa-user me-1"></i> Proposé par <?= htmlspecialchars($service['prenom']) ?> <?= htmlspecialchars($service['nom']) ?>
                     </div>
                 </div>
                 <?php if($service['prix_estime']): ?>
                     <div style="background: #fff0e6; padding: 6px 14px; border-radius: 30px; color: #c17b4c; font-weight: 600;">
-                        <?= number_format($service['prix_estime'], 0, ',', ' ') ?> CFA
+                        <i class="fas fa-money-bill-wave me-1"></i> <?= number_format($service['prix_estime'], 0, ',', ' ') ?> CFA
                     </div>
                 <?php endif; ?>
             </div>
@@ -128,18 +128,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if($message): ?>
             <div class="alerte-succes mb-4">
                 <i class="fas fa-check-circle me-2"></i> <?= $message ?>
-                <div class="mt-2"><a href="mes_demandes.php" style="color: #c17b4c;">Voir mes demandes →</a></div>
+                <div class="mt-2"><a href="mes_demandes.php" style="color: #c17b4c;">Voir mes demandes <i class="fas fa-arrow-right"></i></a></div>
             </div>
         <?php else: ?>
             <form method="POST">
                 <div class="mb-4">
-                    <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">📝 Décrivez votre besoin</label>
+                    <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;"><i class="fas fa-pencil-alt me-1"></i> Décrivez votre besoin</label>
                     <textarea name="description_besoin" rows="5" class="input-maison" required placeholder="Décrivez précisément ce dont vous avez besoin, les détails importants, votre disponibilité..."></textarea>
                 </div>
                 
                 <div class="d-flex gap-3 justify-content-end">
                     <a href="explore.php" class="btn-annuler">Annuler</a>
-                    <button type="submit" class="btn-envoyer">📩 Envoyer la demande</button>
+                    <button type="submit" class="btn-envoyer"><i class="fas fa-paper-plane me-2"></i> Envoyer la demande</button>
                 </div>
             </form>
         <?php endif; ?>
