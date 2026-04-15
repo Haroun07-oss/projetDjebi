@@ -3,15 +3,16 @@ require_once '../includes/config.php';
 require_once '../includes/security.php';
 requirePrestataire();
 
+// Récupérer les messages flash
+$message_succes = $_SESSION['message_succes'] ?? '';
+$message_erreur = $_SESSION['message_erreur'] ?? '';
+unset($_SESSION['message_succes']);
+unset($_SESSION['message_erreur']);
+
+// Récupérer les services
 $stmt = $pdo->prepare("SELECT s.*, c.nom_categorie FROM Service s JOIN Categorie c ON s.id_categorie = c.id_categorie WHERE s.id_prestataire = ? ORDER BY s.id_service DESC");
 $stmt->execute([$_SESSION['user_id']]);
 $services = $stmt->fetchAll();
-
-if(isset($_GET['supprimer'])) {
-    $pdo->prepare("DELETE FROM Service WHERE id_service = ? AND id_prestataire = ?")->execute([$_GET['supprimer'], $_SESSION['user_id']]);
-    header('Location: mes_services.php');
-    exit();
-}
 ?>
 
 <!DOCTYPE html>
@@ -55,6 +56,9 @@ if(isset($_GET['supprimer'])) {
             font-size: 0.75rem;
             color: #b87a5a;
             transition: all 0.15s;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
         }
         .btn-suppr-service:hover {
             background: #f5e8e5;
@@ -72,6 +76,25 @@ if(isset($_GET['supprimer'])) {
         }
         .btn-ajout-header:hover {
             background: #a05f38;
+            color: white;
+        }
+        .alerte-succes {
+            background: #e8f0ec;
+            border-left: 3px solid #7c9c8e;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: #5c7c6e;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+        .alerte-erreur {
+            background: #f5e8e5;
+            border-left: 3px solid #b87a5a;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: #b87a5a;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -90,6 +113,18 @@ if(isset($_GET['supprimer'])) {
             <i class="fas fa-plus-circle me-2"></i> Nouveau service
         </a>
     </div>
+    
+    <?php if($message_succes): ?>
+        <div class="alerte-succes">
+            <i class="fas fa-check-circle me-2"></i> <?= htmlspecialchars($message_succes) ?>
+        </div>
+    <?php endif; ?>
+    
+    <?php if($message_erreur): ?>
+        <div class="alerte-erreur">
+            <i class="fas fa-exclamation-circle me-2"></i> <?= htmlspecialchars($message_erreur) ?>
+        </div>
+    <?php endif; ?>
     
     <?php if(count($services) == 0): ?>
         <div class="text-center py-5" style="background: #fffef7; border: 1px solid #e2dcd0; border-radius: 20px;">
@@ -111,7 +146,9 @@ if(isset($_GET['supprimer'])) {
                         <h5 class="mb-2" style="font-weight: 600;"><?= htmlspecialchars($s['nom_service']) ?></h5>
                         <p class="text-muted small mb-3"><?= nl2br(htmlspecialchars(substr($s['description_service'], 0, 100))) ?>...</p>
                         <div class="d-flex justify-content-end">
-                            <a href="?supprimer=<?= $s['id_service'] ?>" class="btn-suppr-service" onclick="return confirm('Supprimer ce service ?')">
+                            <!-- Bouton qui redirige vers test_delete.php -->
+                            <a href="test_delete.php?service_id=<?= $s['id_service'] ?>" 
+                               class="btn-suppr-service">
                                 <i class="fas fa-trash-alt me-1"></i> Supprimer
                             </a>
                         </div>

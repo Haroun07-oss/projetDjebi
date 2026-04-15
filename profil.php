@@ -15,16 +15,19 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
     $nom = trim($_POST['nom']);
     $prenom = trim($_POST['prenom']);
     $telephone = trim($_POST['telephone']);
+    $ville = trim($_POST['ville']);  // NOUVEAU
     
-    $sql = "UPDATE Utilisateur SET nom=?, prenom=?, telephone=? WHERE id_utilisateur=?";
+    // MODIFIÉ : ajout de ville dans la requête
+    $sql = "UPDATE Utilisateur SET nom=?, prenom=?, telephone=?, ville=? WHERE id_utilisateur=?";
     $stmt = $pdo->prepare($sql);
-    if($stmt->execute([$nom, $prenom, $telephone, $user_id])) {
+    if($stmt->execute([$nom, $prenom, $telephone, $ville, $user_id])) {
         $_SESSION['user_nom'] = $nom;
         $_SESSION['user_prenom'] = $prenom;
         $message = "Profil mis à jour !";
         $user['nom'] = $nom;
         $user['prenom'] = $prenom;
         $user['telephone'] = $telephone;
+        $user['ville'] = $ville;  // NOUVEAU
     }
 }
 
@@ -152,7 +155,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
     
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <!-- Avatar -->
             <div class="text-center mb-4">
                 <div class="avatar-profil">
                     <?= strtoupper(substr($user['prenom'], 0, 1)) ?><?= strtoupper(substr($user['nom'], 0, 1)) ?>
@@ -172,7 +174,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                 </div>
             <?php endif; ?>
             
-            <!-- Formulaire infos perso -->
             <div class="carte-profil">
                 <div style="font-weight: 600; margin-bottom: 1.2rem; border-left: 3px solid #c17b4c; padding-left: 12px;">
                     <i class="fas fa-user-circle me-2"></i> Informations personnelles
@@ -196,13 +197,19 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
                         <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">Téléphone</label>
                         <input type="tel" name="telephone" class="input-profil" value="<?= htmlspecialchars($user['telephone']) ?>" required>
                     </div>
+                    <!-- NOUVEAU : Champ Ville dans le profil -->
+                    <div class="mb-3">
+                        <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">
+                            <i class="fas fa-city me-1"></i> Ville
+                        </label>
+                        <input type="text" name="ville" class="input-profil" value="<?= htmlspecialchars($user['ville'] ?? '') ?>" placeholder="Votre ville">
+                    </div>
                     <div class="text-end">
                         <button type="submit" name="update" class="btn-maj"><i class="fas fa-save me-2"></i> Mettre à jour</button>
                     </div>
                 </form>
             </div>
             
-            <!-- Formulaire changement mot de passe -->
             <div class="carte-profil">
                 <div style="font-weight: 600; margin-bottom: 1.2rem; border-left: 3px solid #c17b4c; padding-left: 12px;">
                     <i class="fas fa-key me-2"></i> Changer mon mot de passe

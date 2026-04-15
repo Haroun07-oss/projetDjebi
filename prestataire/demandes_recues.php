@@ -12,7 +12,9 @@ if(isset($_POST['changer_statut'])) {
 }
 
 $stmt = $pdo->prepare("
-    SELECT d.*, u.nom, u.prenom, u.telephone, u.email, s.nom_service
+    SELECT d.*, 
+           u.nom, u.prenom, u.telephone, u.email, u.ville as client_ville,
+           s.nom_service
     FROM Demande d
     JOIN Utilisateur u ON d.id_client = u.id_utilisateur
     JOIN Service s ON d.id_service = s.id_service
@@ -97,6 +99,16 @@ $demandes = $stmt->fetchAll();
             padding-top: 8px;
             border-top: 1px solid #f0ebe2;
         }
+        .client-ville {
+            background: #f0ebe2;
+            padding: 3px 10px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body style="background: #f4f1ea;">
@@ -124,6 +136,12 @@ $demandes = $stmt->fetchAll();
                         <h5 class="mb-1" style="font-weight: 600;"><?= htmlspecialchars($d['nom_service']) ?></h5>
                         <div class="small" style="color: #8b8a86;">
                             <i class="fas fa-user me-1"></i> Client : <?= htmlspecialchars($d['prenom']) ?> <?= htmlspecialchars($d['nom']) ?>
+                            <!-- NOUVEAU : Ville du client -->
+                            <?php if(!empty($d['client_ville'])): ?>
+                                <span class="client-ville">
+                                    <i class="fas fa-map-marker-alt"></i> <?= htmlspecialchars($d['client_ville']) ?>
+                                </span>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <span class="statut-badge <?= $d['statut']=='en attente'?'statut-attente':($d['statut']=='acceptee'?'statut-acceptee':($d['statut']=='terminee'?'statut-terminee':'statut-refusee')) ?>">

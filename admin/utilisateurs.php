@@ -92,6 +92,27 @@ $users = $pdo->query("SELECT * FROM Utilisateur WHERE role != 'admin' ORDER BY d
             border-radius: 30px;
             font-size: 0.7rem;
         }
+        .ville-cell {
+            max-width: 120px;
+        }
+        .ville-badge {
+            background: #f0ebe2;
+            padding: 3px 10px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .ville-badge i {
+            color: #c17b4c;
+            font-size: 0.65rem;
+        }
+        .ville-vide {
+            color: #d4cdbe;
+            font-style: italic;
+            font-size: 0.7rem;
+        }
     </style>
 </head>
 <body style="background: #f4f1ea;">
@@ -121,6 +142,7 @@ $users = $pdo->query("SELECT * FROM Utilisateur WHERE role != 'admin' ORDER BY d
                         <th>Nom complet</th>
                         <th>Email</th>
                         <th>Téléphone</th>
+                        <th>Ville</th>
                         <th>Rôle</th>
                         <th>Statut</th>
                         <th>Actions</th>
@@ -129,10 +151,21 @@ $users = $pdo->query("SELECT * FROM Utilisateur WHERE role != 'admin' ORDER BY d
                 <tbody>
                     <?php foreach($users as $u): ?>
                     <tr>
-                        <td style="color: #b5a88e;">#<?= $u['id_utilisateur'] ?></td>
+                        <td style="color: #b5a88e;">#<?= $u['id_utilisateur'] ?> </td>
                         <td><strong><?= htmlspecialchars($u['prenom']) ?> <?= htmlspecialchars($u['nom']) ?></strong></td>
                         <td><?= htmlspecialchars($u['email']) ?></td>
                         <td><?= htmlspecialchars($u['telephone']) ?></td>
+                        <td class="ville-cell">
+                            <?php if(!empty($u['ville'])): ?>
+                                <span class="ville-badge">
+                                    <i class="fas fa-map-marker-alt"></i> <?= htmlspecialchars($u['ville']) ?>
+                                </span>
+                            <?php else: ?>
+                                <span class="ville-vide">
+                                    <i class="fas fa-question-circle"></i> Non renseignée
+                                </span>
+                            <?php endif; ?>
+                        </td>
                         <td>
                             <span class="badge-role <?= $u['role']=='prestataire'?'badge-presta':'badge-client' ?>">
                                 <?= $u['role'] == 'prestataire' ? '<i class="fas fa-tools me-1"></i> Prestataire' : '<i class="fas fa-user me-1"></i> Client' ?>

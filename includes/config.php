@@ -3,9 +3,9 @@
 define('BASE_URL', 'http://localhost/projetDjebi');
 
 $host = 'localhost';
-$dbname = 'plateforme_services';
+$dbname = 'servprestation';
 $username = 'root';
-$password = '';
+$password = 'Mamanlebcbg.07';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);

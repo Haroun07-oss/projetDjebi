@@ -4,7 +4,9 @@ require_once '../includes/security.php';
 requireClient();
 
 $stmt = $pdo->prepare("
-    SELECT d.*, u.nom as presta_nom, u.prenom as presta_prenom, s.nom_service,
+    SELECT d.*, 
+           u.nom as presta_nom, u.prenom as presta_prenom, u.ville as presta_ville,
+           s.nom_service,
            a.id_avis, a.note, a.commentaire
     FROM Demande d
     JOIN Utilisateur u ON d.id_prestataire = u.id_utilisateur
@@ -71,6 +73,25 @@ $demandes = $stmt->fetchAll();
             font-size: 0.8rem;
             letter-spacing: 2px;
         }
+        .presta-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        .presta-ville {
+            background: #f0ebe2;
+            padding: 3px 10px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .presta-ville i {
+            color: #c17b4c;
+        }
     </style>
 </head>
 <body style="background: #f4f1ea;">
@@ -85,7 +106,7 @@ $demandes = $stmt->fetchAll();
             <p style="color: #8b8a86;">Suivez l'état de vos demandes de service</p>
         </div>
         <a href="explore.php" style="background: #c17b4c; color: white; border-radius: 40px; padding: 10px 20px; text-decoration: none; font-size: 0.85rem;">
-            <i class="fas fa-plus"></i> Nouvelle demande
+            <i class="fas fa-plus me-2"></i> Nouvelle demande
         </a>
     </div>
     
@@ -102,27 +123,34 @@ $demandes = $stmt->fetchAll();
                     <div>
                         <h5 class="mb-1" style="font-weight: 600;"><?= htmlspecialchars($d['nom_service']) ?></h5>
                         <div class="small" style="color: #8b8a86;">
-                            <i class="fas fa-user"></i> Prestataire : <?= htmlspecialchars($d['presta_prenom']) ?> <?= htmlspecialchars($d['presta_nom']) ?>
+                            <i class="fas fa-user me-1"></i> Prestataire : <?= htmlspecialchars($d['presta_prenom']) ?> <?= htmlspecialchars($d['presta_nom']) ?>
+                        </div>
+                        <!-- NOUVEAU : Ville du prestataire -->
+                        <div class="presta-info">
+                            <div class="presta-ville">
+                                <i class="fas fa-map-marker-alt"></i> 
+                                <?= !empty($d['presta_ville']) ? htmlspecialchars($d['presta_ville']) : 'Non renseignée' ?>
+                            </div>
                         </div>
                     </div>
                     <span class="statut-badge <?= $d['statut']=='en attente'?'statut-attente':($d['statut']=='acceptee'?'statut-acceptee':($d['statut']=='terminee'?'statut-terminee':'statut-refusee')) ?>">
-                        <?= $d['statut'] == 'en attente' ? '⏳ En attente' : ($d['statut'] == 'acceptee' ? '✅ Acceptée' : ($d['statut'] == 'terminee' ? '✨ Terminée' : '❌ Refusée')) ?>
+                        <?= $d['statut'] == 'en attente' ? '<i class="fas fa-hourglass-half me-1"></i> En attente' : ($d['statut'] == 'acceptee' ? '<i class="fas fa-check-circle me-1"></i> Acceptée' : ($d['statut'] == 'terminee' ? '<i class="fas fa-check-double me-1"></i> Terminée' : '<i class="fas fa-times-circle me-1"></i> Refusée')) ?>
                     </span>
                 </div>
                 
                 <div class="besoin-box">
-                    <div class="small" style="color: #8b8a86; margin-bottom: 5px;">📝 Votre besoin :</div>
+                    <div class="small" style="color: #8b8a86; margin-bottom: 5px;"><i class="fas fa-pencil-alt me-1"></i> Votre besoin :</div>
                     <p class="mb-0" style="font-size: 0.85rem;"><?= nl2br(htmlspecialchars($d['description_besoin'])) ?></p>
                 </div>
                 
                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <div class="small" style="color: #b5a88e;">
-                        <i class="far fa-calendar-alt"></i> <?= date('d/m/Y à H:i', strtotime($d['date_demande'])) ?>
+                        <i class="far fa-calendar-alt me-1"></i> <?= date('d/m/Y à H:i', strtotime($d['date_demande'])) ?>
                     </div>
                     
                     <?php if($d['statut'] == 'terminee' && !$d['id_avis']): ?>
                         <a href="avis.php?id_demande=<?= $d['id_demande'] ?>" class="btn-avis">
-                            ⭐ Laisser un avis
+                            <i class="fas fa-star me-1"></i> Laisser un avis
                         </a>
                     <?php endif; ?>
                 </div>

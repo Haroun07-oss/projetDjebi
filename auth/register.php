@@ -14,14 +14,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $prenom = trim($_POST['prenom']);
     $email = trim($_POST['email']);
     $telephone = trim($_POST['telephone']);
+    $ville = trim($_POST['ville']);  // NOUVEAU
     $mot_de_passe = $_POST['mot_de_passe'];
     $confirme = $_POST['confirme_mdp'];
     $role = $_POST['role'];
     
     if($mot_de_passe !== $confirme) {
         $erreur = "Les mots de passe ne correspondent pas.";
-    } elseif(strlen($mot_de_passe) < 4) {
-        $erreur = "Le mot de passe doit faire au moins 4 caractères.";
     } else {
         $stmt = $pdo->prepare("SELECT id_utilisateur FROM Utilisateur WHERE email = ?");
         $stmt->execute([$email]);
@@ -29,10 +28,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             $erreur = "Cet email est déjà utilisé.";
         } else {
             $hash = password_hash($mot_de_passe, PASSWORD_DEFAULT);
-            $sql = "INSERT INTO Utilisateur (nom, prenom, email, mot_de_passe, telephone, role, statut_compte) 
-                    VALUES (?, ?, ?, ?, ?, ?, 'actif')";
+            // MODIFIÉ : ajout de ville dans la requête
+            $sql = "INSERT INTO Utilisateur (nom, prenom, email, mot_de_passe, telephone, ville, role, statut_compte) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, 'actif')";
             $stmt = $pdo->prepare($sql);
-            if($stmt->execute([$nom, $prenom, $email, $hash, $telephone, $role])) {
+            // MODIFIÉ : ajout de $ville dans execute
+            if($stmt->execute([$nom, $prenom, $email, $hash, $telephone, $ville, $role])) {
                 $message = "Inscription réussie ! Vous pouvez maintenant vous connecter.";
             } else {
                 $erreur = "Erreur lors de l'inscription.";
@@ -51,9 +52,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
-        body {
-            background: #f4f1ea;
-        }
         .carte-inscription {
             background: #fffef7;
             border: 1px solid #e2dcd0;
@@ -120,7 +118,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </style>
 </head>
-<body>
+<body style="background: #f4f1ea;">
 
 <div class="container py-5">
     <div class="text-center mb-4">
@@ -133,7 +131,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="text-center mb-4">
             <i class="fas fa-user-plus fa-2x" style="color: #c17b4c;"></i>
             <h3 style="font-weight: 600; margin-top: 10px;">Inscription</h3>
-            <p style="color: #8b8a86; font-size: 0.85rem;">Rejoignez la communauté ! 🎉</p>
+            <p style="color: #8b8a86; font-size: 0.85rem;">Rejoignez la communauté !</p>
         </div>
         
         <?php if($message): ?>
@@ -168,6 +166,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="mb-3">
                 <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">Téléphone</label>
                 <input type="tel" name="telephone" class="input-auth" required>
+            </div>
+            <!-- NOUVEAU : Champ Ville -->
+            <div class="mb-3">
+                <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">
+                    <i class="fas fa-city me-1"></i> Ville
+                </label>
+                <input type="text" name="ville" class="input-auth" placeholder="Ex: Abidjan, Bouaké, Yamoussoukro...">
             </div>
             <div class="mb-3">
                 <label style="font-size: 0.8rem; font-weight: 500; color: #5c5b58; margin-bottom: 6px; display: block;">Mot de passe</label>

@@ -4,7 +4,10 @@ require_once '../includes/security.php';
 requireClient();
 
 $service_id = isset($_GET['service_id']) ? intval($_GET['service_id']) : 0;
-$stmt = $pdo->prepare("SELECT s.*, u.id_utilisateur as presta_id, u.nom, u.prenom FROM Service s JOIN Utilisateur u ON s.id_prestataire = u.id_utilisateur WHERE s.id_service = ?");
+$stmt = $pdo->prepare("SELECT s.*, u.id_utilisateur as presta_id, u.nom, u.prenom, u.ville 
+                       FROM Service s 
+                       JOIN Utilisateur u ON s.id_prestataire = u.id_utilisateur 
+                       WHERE s.id_service = ?");
 $stmt->execute([$service_id]);
 $service = $stmt->fetch();
 
@@ -94,6 +97,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             color: #5c7c6e;
             font-size: 0.85rem;
         }
+        .presta-ville {
+            background: #f0ebe2;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 8px;
+        }
     </style>
 </head>
 <body style="background: #f4f1ea;">
@@ -115,6 +128,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <h5 class="mt-2 mb-1" style="font-weight: 600;"><?= htmlspecialchars($service['nom_service']) ?></h5>
                     <div class="small" style="color: #8b8a86;">
                         <i class="fas fa-user me-1"></i> Proposé par <?= htmlspecialchars($service['prenom']) ?> <?= htmlspecialchars($service['nom']) ?>
+                    </div>
+                    <!-- NOUVEAU : Ville du prestataire -->
+                    <div class="presta-ville">
+                        <i class="fas fa-map-marker-alt"></i> 
+                        <?= !empty($service['ville']) ? htmlspecialchars($service['ville']) : 'Lieu non renseigné' ?>
                     </div>
                 </div>
                 <?php if($service['prix_estime']): ?>

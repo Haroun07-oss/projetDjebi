@@ -4,7 +4,11 @@ require_once '../includes/security.php';
 requireClient();
 
 $id_demande = intval($_GET['id_demande']);
-$stmt = $pdo->prepare("SELECT d.*, s.nom_service FROM Demande d JOIN Service s ON d.id_service = s.id_service WHERE d.id_demande = ? AND d.id_client = ? AND d.statut = 'terminee'");
+$stmt = $pdo->prepare("SELECT d.*, s.nom_service, u.ville as presta_ville, u.nom as presta_nom, u.prenom as presta_prenom
+                       FROM Demande d 
+                       JOIN Service s ON d.id_service = s.id_service
+                       JOIN Utilisateur u ON d.id_prestataire = u.id_utilisateur
+                       WHERE d.id_demande = ? AND d.id_client = ? AND d.statut = 'terminee'");
 $stmt->execute([$id_demande, $_SESSION['user_id']]);
 $demande = $stmt->fetch();
 
@@ -104,6 +108,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-color: #c17b4c;
             color: #c17b4c;
         }
+        .presta-ville {
+            background: #f0ebe2;
+            padding: 3px 10px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 6px;
+        }
     </style>
 </head>
 <body style="background: #f4f1ea;">
@@ -121,7 +135,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="info-service-avis">
             <div class="text-center">
                 <span style="background: #f0ebe2; padding: 3px 10px; border-radius: 30px; font-size: 0.7rem;"><i class="fas fa-check-circle me-1"></i> Service terminé</span>
-                <h5 class="mt-2 mb-0" style="font-weight: 600;"><?= htmlspecialchars($demande['nom_service']) ?></h5>
+                <h5 class="mt-2 mb-1" style="font-weight: 600;"><?= htmlspecialchars($demande['nom_service']) ?></h5>
+                <div class="small" style="color: #8b8a86;">
+                    <i class="fas fa-user me-1"></i> Prestataire : <?= htmlspecialchars($demande['presta_prenom']) ?> <?= htmlspecialchars($demande['presta_nom']) ?>
+                </div>
+                <!-- NOUVEAU : Ville du prestataire -->
+                <div class="presta-ville">
+                    <i class="fas fa-map-marker-alt"></i> 
+                    <?= !empty($demande['presta_ville']) ? htmlspecialchars($demande['presta_ville']) : 'Non renseignée' ?>
+                </div>
             </div>
         </div>
         

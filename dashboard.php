@@ -7,6 +7,12 @@ $user_role = $_SESSION['user_role'];
 $user_prenom = $_SESSION['user_prenom'];
 $user_id = $_SESSION['user_id'];
 
+// Vérifier si l'utilisateur a renseigné sa ville
+$stmt = $pdo->prepare("SELECT ville FROM Utilisateur WHERE id_utilisateur = ?");
+$stmt->execute([$user_id]);
+$user_data = $stmt->fetch();
+$has_ville = !empty($user_data['ville']);
+
 if($user_role == 'client') {
     $stats = $pdo->prepare("SELECT COUNT(*) as total, SUM(CASE WHEN statut='en attente' THEN 1 ELSE 0 END) as en_attente FROM Demande WHERE id_client = ?");
     $stats->execute([$user_id]);
@@ -97,6 +103,46 @@ if($user_role == 'client') {
         .activite-item:last-child {
             border-bottom: none;
         }
+        /* NOUVEAU STYLE POUR LA NOTIFICATION VILLE */
+        .alerte-ville {
+            background: #fef8e7;
+            border-left: 3px solid #c17b4c;
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .alerte-ville .message {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .alerte-ville .message i {
+            font-size: 1.3rem;
+            color: #c17b4c;
+        }
+        .alerte-ville .message span {
+            color: #5c5b58;
+            font-size: 0.85rem;
+        }
+        .btn-ville {
+            background: #c17b4c;
+            border: none;
+            border-radius: 40px;
+            padding: 8px 20px;
+            color: white;
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+        .btn-ville:hover {
+            background: #a05f38;
+            color: white;
+        }
     </style>
 </head>
 <body style="background: #f4f1ea;">
@@ -112,6 +158,20 @@ if($user_role == 'client') {
 </div>
 
 <div class="container mt-4">
+
+    <!-- NOUVEAU : ALERTE SI L'UTILISATEUR N'A PAS DE VILLE -->
+    <?php if(!$has_ville && $user_role != 'admin'): ?>
+    <div class="alerte-ville">
+        <div class="message">
+            <i class="fas fa-map-marker-alt"></i>
+            <span><strong>📍 Complétez votre profil</strong> — Ajoutez votre ville pour recevoir des recommandations près de chez vous.</span>
+        </div>
+        <a href="profil.php" class="btn-ville">
+            <i class="fas fa-plus-circle me-1"></i> Ajouter ma ville
+        </a>
+    </div>
+    <?php endif; ?>
+
     <div class="row g-4 mb-5">
         <?php if($user_role == 'client'): ?>
             <div class="col-md-6">
